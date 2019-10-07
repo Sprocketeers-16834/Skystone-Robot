@@ -10,7 +10,7 @@ public class MotorTestOpMode extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        hardwareMap.get(DcMotor.class, "motorTest");
+        motorTest = hardwareMap.get(DcMotor.class, "motorTest");
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
