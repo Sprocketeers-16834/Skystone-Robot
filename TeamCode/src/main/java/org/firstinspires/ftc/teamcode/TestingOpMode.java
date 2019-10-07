@@ -53,7 +53,7 @@ public class TestingOpMode extends LinearOpMode {
             }
 
             // is button pressed?
-            if (digitalTouch.getState() == false) {
+            if (!digitalTouch.getState()) {
                 // button is pressed.
                 telemetry.addData("Button", "PRESSED");
             } else {
