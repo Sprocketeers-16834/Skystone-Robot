@@ -20,6 +20,7 @@ public class MotorTestOpMode extends LinearOpMode {
 
         double power = 0;
         double power2 = 0;
+
         while(opModeIsActive()) {
             power = -this.gamepad1.left_stick_y;
             power2 = -this.gamepad1.right_stick_y;
