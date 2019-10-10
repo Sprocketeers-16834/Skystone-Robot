@@ -7,17 +7,15 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class DriveOpMode extends LinearOpMode {
-    private DcMotor motorFrontLeft;
-    private DcMotor motorFrontRight;
-    private DcMotor motorBackLeft;
-    private DcMotor motorBackRight;
+    private DcMotor motorLeft;
+    private DcMotor motorRight;
+
 
     @Override
     public void runOpMode() {
-        motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft");
-        motorFrontRight = hardwareMap.get(DcMotor.class, "motorFrontRight");
-        motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft");
-        motorBackRight = hardwareMap.get(DcMotor.class, "motorBackRight");
+        motorLeft = hardwareMap.get(DcMotor.class, "motorLeft");
+        motorRight = hardwareMap.get(DcMotor.class, "motorRight");
+
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -29,10 +27,8 @@ public class DriveOpMode extends LinearOpMode {
         while(opModeIsActive()) {
             powerLeft = -this.gamepad1.left_stick_y;
             powerRight = -this.gamepad1.right_stick_y;
-            motorFrontLeft.setPower(powerLeft);
-            motorBackLeft.setPower(powerLeft);
-            motorFrontRight.setPower(powerRight);
-            motorBackRight.setPower(powerRight);
+            motorLeft.setPower(powerLeft);
+            motorRight.setPower(powerRight);
 
             telemetry.addData("Robot is driving", "");
             telemetry.update();
