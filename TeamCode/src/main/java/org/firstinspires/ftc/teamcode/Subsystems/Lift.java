@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -9,7 +9,7 @@ public class Lift {
     private DcMotor rightLift;
     private final int rotToBlock = 4;
 
-    void init(HardwareMap hwMap) {
+    public void init(HardwareMap hwMap) {
         leftLift = hwMap.get(DcMotor.class, "leftLift");
         leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftLift.setDirection(DcMotor.Direction.REVERSE);
@@ -18,12 +18,12 @@ public class Lift {
         rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    void lift(double power) {
+    public void lift(double power) {
         leftLift.setPower(power);
         rightLift.setPower(power);
     }
 
-    void liftBlock(int block) {
+    public void liftBlock(int block) {
         leftLift.setTargetPosition(block*rotToBlock);
     }
 
