@@ -13,7 +13,7 @@ public class Robot extends OpMode {
     private Lift lift = new Lift();
     private Pincer pincer= new Pincer();
 
-    @Overrideitit
+    @Override
     public void init() {
         drivetrain.init(hardwareMap);
     }

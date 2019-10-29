@@ -11,4 +11,12 @@ public class Pincer {
         pincer = hwMap.get(Servo.class, "pincer");
     }
 
+    public void open() {
+        pincer.setPosition(1.0);
+    }
+
+    public void close() {
+        pincer.setPosition(0);
+    }
+
 }
