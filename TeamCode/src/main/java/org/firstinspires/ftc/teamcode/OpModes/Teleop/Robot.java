@@ -27,5 +27,8 @@ public class Robot extends OpMode {
 
         double liftPower = -this.gamepad2.left_stick_x;
         lift.lift(liftPower);
+
+        float pincerPower = this.gamepad2.right_stick_x;
+        pincer.move(pincerPower);
     }
 }
