@@ -19,17 +19,6 @@ public class Pincer {
         return state;
     }
 
-    /*public void open() {
-        pincer.setPower(1.0);
-        state = true;
-    }
-
-    public void close() {
-        pincer.setPosition(0);
-        state = false;
-    }*/
-
-
     public void move(double power){
         pincer.setPower(power);
     }

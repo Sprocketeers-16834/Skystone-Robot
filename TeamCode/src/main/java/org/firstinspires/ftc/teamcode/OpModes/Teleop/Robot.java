@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.OpModes.Teleop;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -28,7 +28,7 @@ public class Robot extends OpMode {
         double liftPower = -this.gamepad2.left_stick_x;
         lift.lift(liftPower);
 
-        float pincerPower = this.gamepad2.right_stick_x;
+        double pincerPower = this.gamepad2.right_stick_x;
         pincer.move(pincerPower);
     }
 }

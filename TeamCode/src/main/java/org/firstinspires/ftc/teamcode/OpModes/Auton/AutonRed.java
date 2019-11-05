@@ -232,16 +232,16 @@ public class AutonRed extends LinearOpMode {
         //2\pi\left(r+a\right)\left(\frac{b}{180}\right)
         //2\pi\left(r-a\right)\left(\frac{b}{180}\right)
         //
-        Double rightMotor;
-        Double leftMotor;
-        rightMotor = 2 * Math.PI * (radius - (width / 2)) * (angle / 180);
-        leftMotor = 2 * Math.PI * (radius + (width / 2)) * (angle / 180);
+        Double rightMotorF;
+        Double leftMotorF;
+        rightMotorF = 2 * Math.PI * (radius - (width / 2)) * (angle / 180);
+        leftMotorF = 2 * Math.PI * (radius + (width / 2)) * (angle / 180);
         //
-        int rightd = (int) (Math.round(rightMotor * conversion));
-        int leftd = (int) (Math.round(leftMotor * conversion));
+        int rightd = (int) (Math.round(rightMotorF * conversion));
+        int leftd = (int) (Math.round(leftMotorF * conversion));
         //
-        telemetry.addData("left motor", leftMotor + ", " + leftd);
-        telemetry.addData("right motor", rightMotor + ", " + rightd);
+        telemetry.addData("left motor", leftMotorF + ", " + leftd);
+        telemetry.addData("right motor", rightMotorF + ", " + rightd);
         telemetry.update();
         //
         left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -254,7 +254,7 @@ public class AutonRed extends LinearOpMode {
         left.setTargetPosition(left.getCurrentPosition() + leftd);
         //
         left.setPower(speed);
-        right.setPower((rightMotor / leftMotor) * speed);
+        right.setPower((rightMotorF / leftMotorF) * speed);
         //
         while (left.isBusy() || right.isBusy()){
             if (exit){

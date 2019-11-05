@@ -4,46 +4,87 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Drivetrain {
-    private DcMotor leftMotor;
-    private DcMotor rightMotor;
+    private DcMotor leftMotorF;
+    private DcMotor leftMotorB;
+    private DcMotor rightMotorF;
+    private DcMotor rightMotorB;
 
     int cpr = 28;
     double wheelDiameter = 4;
 
 
     public void init(HardwareMap hwMap) {
-        leftMotor = hwMap.get(DcMotor.class, "leftMotor");
-        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftMotorF = hwMap.get(DcMotor.class, "leftMotorF");
+        leftMotorF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        rightMotor = hwMap.get(DcMotor.class, "leftMotor");
-        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftMotorB = hwMap.get(DcMotor.class, "leftMotorB");
+        leftMotorB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        rightMotorF = hwMap.get(DcMotor.class, "rightMotorF");
+        rightMotorF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotorF.setDirection(DcMotor.Direction.REVERSE);
+
+        rightMotorB = hwMap.get(DcMotor.class, "rightMotorB");
+        rightMotorB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotorB.setDirection(DcMotor.Direction.REVERSE);
 
     }
 
     public void arcade(double power, double turn) {
-        leftMotor.setPower(power - turn);
-        rightMotor.setPower(power + turn);
+        leftMotorF.setPower(power - turn);
+        leftMotorB.setPower(power - turn);
+
+        rightMotorF.setPower(power + turn);
+        rightMotorB.setPower(power + turn);
     }
 
     public void tank(double left, double right) {
-        leftMotor.setPower(left);
-        rightMotor.setPower(right);
+
+        leftMotorF.setPower(left);
+        leftMotorB.setPower(left);
+        rightMotorF.setPower(right);
+        rightMotorB.setPower(right);
+
+    }
+
+    public void single(double power, double     turn) {
+        leftMotorF.setPower(power - turn);
+        leftMotorB.setPower(power - turn);
+        rightMotorF.setPower(power + turn);
+        rightMotorB.setPower(power + turn);
+
     }
 
     //Autonomous methods
-    void moveInches(double inches, double speed) {
-        int startLeft = leftMotor.getCurrentPosition();
-        int startRight = rightMotor.getCurrentPosition();
+
+    public void move(int counts, double power) {
+        rightMotorF.setTargetPosition(counts);
+        rightMotorF.setPower(power);
+
+        rightMotorB.setTargetPosition(counts);
+        rightMotorB.setPower(power);
+
+        leftMotorF.setTargetPosition(counts);
+        leftMotorF.setPower(power);
+
+        leftMotorB.setTargetPosition(counts);
+        leftMotorB.setPower(power);
+    }
+    public void moveInches(double inches, double speed) {
+        int startLeft = leftMotorF.getCurrentPosition();
+        int startRight = rightMotorF.getCurrentPosition();
 
         //dont think im converting right but im lazy to fix
-        leftMotor.setTargetPosition((int)(cpr/(Math.PI*wheelDiameter) * inches) - startLeft);
-        rightMotor.setTargetPosition((int)(cpr/(Math.PI*wheelDiameter) * inches) - startRight);
+        leftMotorF.setTargetPosition((int)(cpr/(Math.PI*wheelDiameter) * inches) - startLeft);
+        rightMotorF.setTargetPosition((int)(cpr/(Math.PI*wheelDiameter) * inches) - startRight);
 
-        leftMotor.setPower(speed);
-        rightMotor.setPower(speed);
+        leftMotorF.setPower(speed);
+        rightMotorF.setPower(speed);
     }
+
+//    public void turn90(double power) {
+//        rightMotorF.setPower();
+//    }
 
     public void turnAngle(double angle, double speed) {
         int ticksPer10Deg = 20; //CHANGE THISSSS
@@ -64,52 +105,17 @@ public class Drivetrain {
         }
 
         int angleTurned = 0;
-        int rightStart = rightMotor.getCurrentPosition();
-        int leftStart = leftMotor.getCurrentPosition();
+        int rightStart = rightMotorF.getCurrentPosition();
+        int leftStart = leftMotorF.getCurrentPosition();
 
         while(angleTurned <= numOfTicks) {  //??
 
         }
 
 
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+        leftMotorF.setPower(0);
+        rightMotorF.setPower(0);
     }
-
-//    void turnAngle(int speed, int angle, bool clockwise){ //numbers require fine-tuning by testing the encoder values
-//        SlowDown = .8 * numOfTicks;
-//        AngleTurned = 0;
-//        encvalLD = abs(SensorValue[encLeftDrive]);
-//        encvalRD = abs(SensorValue[encRightDrive]);
-//        while(AngleTurned <= TATicks)
-//        {
-//            encvalLD = abs(SensorValue[encLeftDrive]);
-//            encvalRD = abs(SensorValue[encRightDrive]);
-//            AngleTurned = abs(multR * encvalRD);
-//            if (AngleTurned < SlowDown)
-//                realSpeed = speed;
-//            else
-//                realSpeed = .75 * speed;
-//            RightSpeed = multR * realSpeed;
-//            LeftSpeed = multL * realSpeed * SpeedCorr;
-//            motor[FRWheel]= RightSpeed; //turning
-//            motor[RRWheel]= RightSpeed;
-//            motor[FLWheel]= LeftSpeed;
-//            motor[RLWheel]= LeftSpeed;
-//            if(AngleTurned >= TATicks)
-//            {
-//                motor[FRWheel] = 0;
-//                motor[RRWheel] = 0;
-//                motor[FLWheel] = 0;
-//                motor[RLWheel] = 0;
-//            }
-//        }
-//        motor[FRWheel]=0;	//just in case stuff happens and motors don't stop
-//        motor[RRWheel]=0;
-//        motor[FLWheel]=0;
-//        motor[RLWheel]=0;
-//    }
-
 
     private double angleToTicks(double angle) {
         int ticks = 0;

@@ -10,13 +10,14 @@ import org.firstinspires.ftc.teamcode.Subsystems.Pincer;
 @Autonomous
 public class EmmaAutonRed extends LinearOpMode {
     private Drivetrain drivetrain = new Drivetrain();
-    private Lift lift = new Lift();
-    private Pincer pincer= new Pincer();
+//    private Lift lift = new Lift();
+//    private Pincer pincer= new Pincer();
 
     int cpr = 28;
 
     public void runOpMode() {
         //list of commands :(
+        drivetrain.move(30, 0.5);
     }
 }
 

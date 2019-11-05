@@ -1,23 +1,33 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class GreenSquishyWheels {
-    private DcMotor leftGSW;
-    private DcMotor rightGSW;
+    private DcMotor leftGSWF;
+    private DcMotor rightGSWF;
+    private DcMotor leftGSWB;
+    private DcMotor rightGSWB;
 
     void init(HardwareMap hwMap) {
-        leftGSW = hwMap.get(DcMotor.class, "leftGSW");
-        leftGSW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftGSW.setDirection(DcMotor.Direction.REVERSE);
+        leftGSWF = hwMap.get(DcMotor.class, "leftGSW");
+        leftGSWF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftGSWF.setDirection(DcMotor.Direction.REVERSE);
 
-        rightGSW = hwMap.get(DcMotor.class, "rightGSW");
-        rightGSW.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightGSWF = hwMap.get(DcMotor.class, "rightGSW");
+        rightGSWF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftGSWB = hwMap.get(DcMotor.class, "leftGSW");
+        leftGSWB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftGSWB.setDirection(DcMotor.Direction.REVERSE);
+
+        rightGSWB = hwMap.get(DcMotor.class, "rightGSW");
+        rightGSWB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     void intake(double power) {
-        leftGSW.setPower(power);
-        rightGSW.setPower(power);
+        leftGSWF.setPower(power);
+        rightGSWF.setPower(power);
+        leftGSWB.setPower(power);
+        rightGSWB.setPower(power);
     }
 }
