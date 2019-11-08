@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Puller {
@@ -14,15 +12,25 @@ public class Puller {
         leftPuller = hwMap.get(Servo.class, "leftPuller");
     }
 
-    public void move(double power){
-        if(leftPuller.getPosition() < 0.2) {
-            leftPuller.setPosition(1);
-            rightPuller.setPosition(1);
-        }
-        if(leftPuller.getPosition() >0.8) {
-            leftPuller.setPosition(0);
-            rightPuller.setPosition(0);
-        }
+    public void down() {
+        leftPuller.setPosition(1.0);
+        rightPuller.setPosition(1.0);
     }
+
+    public void up() {
+        leftPuller.setPosition(0.0);
+        rightPuller.setPosition(0.0);
+    }
+
+//    public void move(){
+//        if(leftPuller.getPosition() < 0.2) {
+//            leftPuller.setPosition(1);
+//            rightPuller.setPosition(0);
+//        }
+//        if(leftPuller.getPosition() >0.8) {
+//            leftPuller.setPosition(0);
+//            rightPuller.setPosition(1);
+//        }
+//    }
 
 }
