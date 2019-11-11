@@ -10,8 +10,13 @@ public class Grabber {
         grabber = hwMap.get(Servo.class, "grabber");
     }
 
-//    public void grab() {
-//      yeah idk what this subsystem does
-//}
+
+    public void down() {
+        grabber.setPosition(Servo.MAX_POSITION);
+    }
+
+    public void up() {
+        grabber.setPosition(Servo.MIN_POSITION);
+    }
 
 }
