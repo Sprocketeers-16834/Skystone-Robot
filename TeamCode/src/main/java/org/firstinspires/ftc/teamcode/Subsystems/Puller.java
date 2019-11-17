@@ -19,8 +19,8 @@ public class Puller {
     }
 
     public void up() {
-        leftPuller.setPosition(Servo.MAX_POSITION);
-        rightPuller.setPosition(Servo.MIN_POSITION);
+        leftPuller.setPosition(0.5);
+        rightPuller.setPosition(0.5);
     }
 
 //    public void move(){

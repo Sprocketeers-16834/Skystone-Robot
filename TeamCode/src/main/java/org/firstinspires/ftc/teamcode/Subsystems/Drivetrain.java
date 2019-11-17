@@ -11,6 +11,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+//negative means cw for arc
+
 public class Drivetrain {
     private DcMotor leftMotorF;
     private DcMotor leftMotorB;
@@ -31,7 +33,6 @@ public class Drivetrain {
 
     Orientation angles;
     Acceleration gravity;
-
 
     public void init(HardwareMap hwMap) {
         leftMotorF = hwMap.get(DcMotor.class, "leftMotorF");
@@ -66,8 +67,14 @@ public class Drivetrain {
     }
 
     public void tank(double left, double right) {
-        setLeft(left);
-        setRight(right);
+        if ( Math.abs(left) > 0.1 )
+            setLeft(left);
+        if ( Math.abs(right) > 0.1 )
+            setRight(right);
+        else {
+            setLeft(0);
+            setRight(0);
+        }
     }
 
     private void setLeft(double power) {
@@ -100,6 +107,13 @@ public class Drivetrain {
 
     //Autonomous methods
     public void moveToPosition(double inches, double speed){
+        inches*=-1;
+
+        leftMotorF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftMotorB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotorF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotorB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         leftMotorF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftMotorB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightMotorF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -190,16 +204,14 @@ public class Drivetrain {
  Degrees should always be positive, make speedDirection negative to turn left.
   */
     public void turnWithGyro(double degrees, double speedDirection){
-        //<editor-fold desc="Initialize">
         angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double yaw = -angles.firstAngle;//make this negative
-        //
+
         double first;
         double second;
-        //</editor-fold>
-        //
+
         if (speedDirection > 0){//set target positions
-            //<editor-fold desc="turn right">
+
             if (degrees > 20){
                 first = (degrees - 20) + devertify(yaw);
                 second = degrees + devertify(yaw);
@@ -207,21 +219,17 @@ public class Drivetrain {
                 first = devertify(yaw);
                 second = degrees + devertify(yaw);
             }
-            //</editor-fold>
-        }else{
-            //<editor-fold desc="turn left">
-            if (degrees > 20){
+
+        }else {
+            if (degrees > 20) {
                 first = devertify(-(degrees - 20) + devertify(yaw));
                 second = devertify(-degrees + devertify(yaw));
-            }else{
+            } else {
                 first = devertify(yaw);
                 second = devertify(-degrees + devertify(yaw));
             }
-            //
-            //</editor-fold>
         }
-        //
-        //<editor-fold desc="Go to position">
+
         Double firsta = convertify(first - 5);//175
         Double firstb = convertify(first + 5);//-175
         //

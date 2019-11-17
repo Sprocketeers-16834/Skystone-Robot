@@ -32,29 +32,37 @@ public class TeleopRobot extends OpMode {
         drivetrain.tank(left, right);
 
 
-        if(this.gamepad1.dpad_down) {
+        if (this.gamepad1.dpad_down) {
             puller.down();
-        } else if(this.gamepad1.dpad_up) {
+        } else if (this.gamepad1.dpad_up) {
             puller.up();
         }
 
-        if(this.gamepad2.y) {
+        if (this.gamepad2.dpad_up) {
             grabber.up();
-        } else if(this.gamepad2.a) {
+        } else if (this.gamepad2.dpad_down) {
             grabber.down();
         }
 
-        if(this.gamepad2.x) {
+        double intakePower = this.gamepad2.right_stick_y;
+        gsw.allIn(intakePower);
+        if(this.gamepad2.a) {
             gsw.intake(1.0);
+        } else if(this.gamepad2.y) {
+            gsw.outtake(1.0);
+        } else if(this.gamepad2.x) {
+            gsw.allIn(1.0);
         } else if(this.gamepad2.b) {
-            gsw.spit(1.0);
+            gsw.allOut(1.0);
         } else {
             gsw.stop();
         }
 
         telemetry.addData("intake", this.gamepad1.x);
+        telemetry.addData("leftJoystick", this.gamepad1.left_stick_y);
+        telemetry.addData("rightJoystick", this.gamepad1.right_stick_y);
         telemetry.addData("spit", this.gamepad1.b);
-
+        telemetry.addData("color!", grabber.getAlpha());
         telemetry.update();
     }
 }
