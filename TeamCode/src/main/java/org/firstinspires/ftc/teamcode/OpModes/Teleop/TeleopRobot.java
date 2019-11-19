@@ -10,17 +10,13 @@ import org.firstinspires.ftc.teamcode.Subsystems.Puller;
 
 @TeleOp
 public class TeleopRobot extends OpMode {
-    private Drivetrain drivetrain = new Drivetrain();
-    private Puller puller = new Puller();
-    private Grabber grabber = new Grabber();
-    private GreenSquishyWheels gsw = new GreenSquishyWheels();
+    private Drivetrain drivetrain = new Drivetrain(hardwareMap);
+    private Puller puller = new Puller(hardwareMap);
+    private Grabber grabber = new Grabber(hardwareMap);
+    private GreenSquishyWheels gsw = new GreenSquishyWheels(hardwareMap);
 
     @Override
     public void init() {
-        drivetrain.init(hardwareMap);
-        puller.init(hardwareMap);
-        grabber.init(hardwareMap);
-        gsw.init(hardwareMap);
         grabber.up();
     }
 

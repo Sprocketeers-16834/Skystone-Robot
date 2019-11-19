@@ -34,7 +34,7 @@ public class Drivetrain {
     Orientation angles;
     Acceleration gravity;
 
-    public void init(HardwareMap hwMap) {
+    public Drivetrain(HardwareMap hwMap) {
         leftMotorF = hwMap.get(DcMotor.class, "leftMotorF");
         leftMotorF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -59,6 +59,7 @@ public class Drivetrain {
         //
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+
     }
 
     public void arcade(double power, double turn) {

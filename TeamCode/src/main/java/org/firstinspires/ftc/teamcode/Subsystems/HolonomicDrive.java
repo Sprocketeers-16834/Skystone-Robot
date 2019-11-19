@@ -12,7 +12,7 @@ public class HolonomicDrive {
     private DcMotor rightMotorB;
     private BNO055IMU imu;
 
-    public void init(HardwareMap hwMap) {
+    public HolonomicDrive(HardwareMap hwMap) {
         leftMotorF = hwMap.get(DcMotor.class, "leftMotorF");
         leftMotorF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 

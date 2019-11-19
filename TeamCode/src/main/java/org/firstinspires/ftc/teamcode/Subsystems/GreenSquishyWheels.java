@@ -9,7 +9,7 @@ public class GreenSquishyWheels {
     private DcMotor leftGSWB;
     private DcMotor rightGSWB;
 
-    public void init(HardwareMap hwMap) {
+    public GreenSquishyWheels(HardwareMap hwMap) {
         leftGSWF = hwMap.get(DcMotor.class, "leftGSWF");
         leftGSWF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftGSWF.setDirection(DcMotor.Direction.REVERSE);

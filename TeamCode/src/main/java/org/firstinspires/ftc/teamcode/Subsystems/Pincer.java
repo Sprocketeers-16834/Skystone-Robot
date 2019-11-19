@@ -11,7 +11,7 @@ public class Pincer {
     private DcMotor pincer;
     private boolean state = true;
 
-    public void init(HardwareMap hwMap) {
+    public Pincer(HardwareMap hwMap) {
         pincer = hwMap.get(DcMotor.class, "pincer");
     }
 
