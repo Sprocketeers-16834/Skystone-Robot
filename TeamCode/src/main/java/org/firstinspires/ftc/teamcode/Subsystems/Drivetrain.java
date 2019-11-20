@@ -34,7 +34,7 @@ public class Drivetrain {
     Orientation angles;
     Acceleration gravity;
 
-    public Drivetrain(HardwareMap hwMap) {
+    public void init(HardwareMap hwMap) {
         leftMotorF = hwMap.get(DcMotor.class, "leftMotorF");
         leftMotorF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 

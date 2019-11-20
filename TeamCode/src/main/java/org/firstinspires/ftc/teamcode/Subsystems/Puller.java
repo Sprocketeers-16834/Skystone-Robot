@@ -8,7 +8,7 @@ public class Puller {
     private Servo rightPuller;
     private Servo leftPuller;
 
-    public Puller(HardwareMap hwMap) {
+    public void init(HardwareMap hwMap) {
         rightPuller = hwMap.get(Servo.class, "rightPuller");
         leftPuller = hwMap.get(Servo.class, "leftPuller");
     }

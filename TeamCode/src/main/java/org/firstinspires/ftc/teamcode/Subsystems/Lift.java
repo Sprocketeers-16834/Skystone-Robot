@@ -9,7 +9,7 @@ public class Lift {
     private DcMotor rightLift;
     private final int rotToBlock = 4;
 
-    public Lift(HardwareMap hwMap) {
+    public void init(HardwareMap hwMap) {
         leftLift = hwMap.get(DcMotor.class, "leftLift");
         leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftLift.setDirection(DcMotor.Direction.REVERSE);

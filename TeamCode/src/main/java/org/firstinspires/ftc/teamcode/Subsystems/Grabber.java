@@ -8,7 +8,7 @@ public class Grabber {
     private Servo grabber;
     private ColorSensor color;
 
-    public Grabber(HardwareMap hwMap) {
+    public void init(HardwareMap hwMap) {
         grabber = hwMap.get(Servo.class, "grabber");
         color = hwMap.get(ColorSensor.class, "color");
     }
