@@ -57,7 +57,11 @@ public class HolonomicDrive {
         drive4.setPower(straightPower);
     }
 
-    public void turn(double x, double y) {
-
+    public void spin(double turn) {
+        turn*=0.8;
+        drive1.setPower(turn);
+        drive2.setPower(turn);
+        drive3.setPower(turn);
+        drive4.setPower(turn);
     }
 }

@@ -29,8 +29,8 @@ public class TeleopRobot extends OpMode {
     public void loop() {
         double x = this.gamepad1.right_stick_x;
         double y = -this.gamepad1.right_stick_y;
-        telemetry.addData("x", x);
-        telemetry.addData("y", y);
+        double turn = this.gamepad1.left_stick_x;
+        hd.spin(x);
         hd.drive(x, y);
 
 
