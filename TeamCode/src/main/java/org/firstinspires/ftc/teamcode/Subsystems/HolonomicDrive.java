@@ -44,9 +44,11 @@ public class HolonomicDrive {
 
     public void drive(double x, double y){
         double angle = Math.atan(y/x);
+        double power = Math.sqrt(x*x+y*y);
+
         angle+=45;
-        double straightPower = Math.sin(angle);
-        double sidePower = Math.cos(angle);
+        double straightPower = power*Math.sin(angle);
+        double sidePower = power*Math.cos(angle);
         if ( x < 0 ) {
             straightPower *= -1;
             sidePower *= -1;
