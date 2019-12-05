@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ServoController;
 
 public class Puller {
     private Servo rightPuller;
@@ -19,19 +18,19 @@ public class Puller {
     }
 
     public void up() {
-        leftPuller.setPosition(0.5);
-        rightPuller.setPosition(0.5);
+        leftPuller.setPosition(0.7);
+        rightPuller.setPosition(0.3);
     }
 
 //    public void move(){
 //        if(leftPuller.getPosition() < 0.2) {
 //            leftPuller.setPosition(1);
 //            rightPuller.setPosition(0);
-//        }
 //        if(leftPuller.getPosition() >0.8) {
-//            leftPuller.setPosition(0);
+//            leftPuller.setPosition(0);//        }
 //            rightPuller.setPosition(1);
 //        }
+
 //    }
 
 }

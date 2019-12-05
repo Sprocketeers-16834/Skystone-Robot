@@ -78,8 +78,8 @@ public class HolonomicDrive {
         turn *= 0.8;
         drive1.setPower(turn);
         drive2.setPower(turn);
-        drive3.setPower(turn);
-        drive4.setPower(turn);
+        drive3.setPower(-turn);
+        drive4.setPower(-turn);
     }
 
     //Autonomous methods
@@ -93,10 +93,10 @@ public class HolonomicDrive {
         resetEncoders();
         int move = (int) (Math.round(inches * conversion));
 
-        drive3.setTargetPosition(drive3.getCurrentPosition() + move);
+        drive3.setTargetPosition(-drive3.getCurrentPosition() - move);
         drive2.setTargetPosition(drive2.getCurrentPosition() + move);
         drive4.setTargetPosition(drive4.getCurrentPosition() + move);
-        drive1.setTargetPosition(drive1.getCurrentPosition() + move);
+        drive1.setTargetPosition(-drive1.getCurrentPosition() - move);
 
         drive2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -251,9 +251,9 @@ public class HolonomicDrive {
         drive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         drive4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //
-        drive2.setPower(input);
+        drive2.setPower(-input);
         drive3.setPower(input);
         drive1.setPower(-input);
-        drive4.setPower(-input);
+        drive4.setPower(input);
     }
 }

@@ -11,10 +11,15 @@ public class Grabber {
     public void init(HardwareMap hwMap) {
         grabber = hwMap.get(Servo.class, "grabber");
         color = hwMap.get(ColorSensor.class, "color");
+        color.enableLed(false);
     }
 
     public int getAlpha() {
         return color.alpha();
+    }
+
+    public double getPosition() {
+        return grabber.getPosition();
     }
 
     public void down() {
@@ -25,5 +30,11 @@ public class Grabber {
         grabber.setPosition(0.05);
     }
 
-
+//    Autonomous stuff
+    public boolean isSkystone() {
+        if(getAlpha()<300) {
+            return true;
+        }
+        return false;
+    }
 }
