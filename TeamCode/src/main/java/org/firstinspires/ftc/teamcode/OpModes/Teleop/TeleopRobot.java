@@ -38,14 +38,23 @@ public class TeleopRobot extends OpMode {
         hd.drive(x, y);
 
         fBar.move(rotate);
-
-        if(this.gamepad2.dpad_down) {
+//
+        if(this.gamepad2.b) {
             fBar.open();
-        } if(this.gamepad2.dpad_up) {
+            telemetry.addData("dpad down", this.gamepad2.dpad_down);
+
+        } else if(this.gamepad2.x) {
             fBar.close();
+            telemetry.addData("dpad up", this.gamepad2.dpad_up);
         }
 
-        telemetry.addData("color alpha", grabber.getAlpha());
+        if(this.gamepad1.dpad_up) {
+            puller.down();
+        } else if(this.gamepad1.dpad_down) {
+            puller.up();
+        }
+
+        telemetry.addData("color alpha", grabber.getValue());
         telemetry.addData("grabber", grabber.getPosition());
 
         telemetry.update();

@@ -14,8 +14,8 @@ public class Grabber {
         color.enableLed(false);
     }
 
-    public int getAlpha() {
-        return color.alpha();
+    public int getValue() {
+        return color.argb();
     }
 
     public double getPosition() {
@@ -32,7 +32,7 @@ public class Grabber {
 
 //    Autonomous stuff
     public boolean isSkystone() {
-        if(getAlpha()<300) {
+        if(getValue()<80000000) {
             return true;
         }
         return false;

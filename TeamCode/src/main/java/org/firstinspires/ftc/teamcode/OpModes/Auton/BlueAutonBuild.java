@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.OpModes.Auton;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.Subsystems.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Puller;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -9,14 +10,26 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 public class BlueAutonBuild extends LinearOpMode {
 
-    private Drivetrain drivetrain = new Drivetrain();
+    private HolonomicDrive hd = new HolonomicDrive();
     private Puller puller = new Puller();
 
     public void runOpMode(){
         waitForStart();
-        //Initialize all subsystems that are to be used
-        drivetrain.init(hardwareMap);
+        hd.init(hardwareMap);
         puller.init(hardwareMap);
+
+        hd.strafeToPosition(53, 0.3);
+//        puller.up();
+//        hd.moveToPosition(-26.4, 0.2);
+//        hd.strafeToPosition(20, 0.2);
+//        hd.moveToPosition(-22,0.2);
+//        puller.up();
+//        hd.moveToPosition(10, 0.1);
+//        hd.moveToPosition(85, 0.2);
+//        //
+//        puller.down();
+//
+//        hd.strafeToPosition(-59.4, 0.2);
 
 //        write new auton here
 

@@ -16,27 +16,34 @@ public class BlueAutonLoad extends LinearOpMode {
         hd.init(hardwareMap);
         grabber.init(hardwareMap);
 
-//        hd.moveToPosition(28, 0.5);
-//        hd.turnWithGyro(90, 0.4);
+        hd.strafeToPosition(-38.0, 0.2);
+        hd.moveToPosition(10, 0.3);
 
-        boolean flagSS = false;
-        int count = 0;
-        while(!flagSS && count<6) {
+
+        for(int i=0; i<2; i++) {
+            boolean flagSS = false;
+            int count = 0;
             hd.moveToPosition(10, 0.3);
-            count++;
 
-            if(grabber.isSkystone()) {
-                flagSS = true;
+            while(!flagSS && count<6) {
+                count++;
+
+                if(grabber.isSkystone()) {
+                    flagSS = true;
+                    grabber.down();
+                }
             }
+            grabber.down();
+            hd.strafeToPosition(-   6.6, 0.2);
+            hd.moveToPosition(-74, 0.2);
+            grabber.up();
+            hd.moveToPosition(41, 0.2);
+            hd.strafeToPosition(7.0, 0.2);
         }
 
-        telemetry.addData("grabber", grabber.getPosition());
-        grabber.down();
-
-//        hd.turnWithGyro(10, 0.3);
-//        hd.moveToPosition(24, 0.4);
-        grabber.down();
-
+        hd.moveToPosition(-41, 0.2);
+        hd.strafeToPosition(-7.0, 0.2);
+//        hd.moveToPosition(-16, 0.2);
 
 //        Auton code for meet 1
 //        int count = 0;

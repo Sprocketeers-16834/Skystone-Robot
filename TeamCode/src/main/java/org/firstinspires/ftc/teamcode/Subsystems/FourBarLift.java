@@ -24,7 +24,7 @@ public class FourBarLift {
     }
 
     public void open() {
-        pincer.setPosition(0.7);
+        pincer.setPosition(0.6);
     }
 
 }
