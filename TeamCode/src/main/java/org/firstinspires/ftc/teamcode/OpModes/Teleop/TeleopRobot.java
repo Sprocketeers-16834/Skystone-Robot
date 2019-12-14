@@ -28,17 +28,28 @@ public class TeleopRobot extends OpMode {
     // Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
     @Override
     public void loop() {
-        double x = this.gamepad1.right_stick_x;
-        double y = -this.gamepad1.right_stick_y;
+        double x = -this.gamepad1.right_stick_x;
+        double y = this.gamepad1.right_stick_y;
         double turn = this.gamepad1.left_stick_x;
 
         double rotate = -this.gamepad2.left_stick_y;
 
-        hd.spin(turn);
-        hd.drive(x, y);
+        if(Math.abs(turn-0) < 0.1   ) {
+            hd.drive(x, y);
+            telemetry.addData("action:", "driving");
+        }
 
-        fBar.move(rotate);
-//
+        if(x==0 && y==0) {
+            hd.spin(turn);
+            telemetry.addData("action:", "turning");
+        }
+
+        if(rotate!=0) {
+            fBar.move(rotate);
+        } else {
+            fBar.move(0);
+        }
+
         if(this.gamepad2.b) {
             fBar.open();
             telemetry.addData("dpad down", this.gamepad2.dpad_down);

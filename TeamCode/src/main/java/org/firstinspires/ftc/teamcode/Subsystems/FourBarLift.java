@@ -8,11 +8,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class FourBarLift {
     private DcMotor rotate;
-    private Servo pincer;
+    private Servo leftPincer;
+    private Servo rightPincer;
 
     public void init(HardwareMap hwMap) {
         rotate = hwMap.get(DcMotor.class, "rotate");
-        pincer = hwMap.get(Servo.class, "pincer");
+        leftPincer = hwMap.get(Servo.class, "leftPincer");
+        rightPincer = hwMap.get(Servo.class, "rightPincer");
     }
 
     public void move(double power){
@@ -20,11 +22,13 @@ public class FourBarLift {
     }
 
     public void close() {
-        pincer.setPosition(Servo.MIN_POSITION);
+        leftPincer.setPosition(Servo.MIN_POSITION);
+        rightPincer.setPosition(Servo.MAX_POSITION);
     }
 
     public void open() {
-        pincer.setPosition(0.6);
+        leftPincer.setPosition(0.6);
+        rightPincer.setPosition(0.6);
     }
 
 }
