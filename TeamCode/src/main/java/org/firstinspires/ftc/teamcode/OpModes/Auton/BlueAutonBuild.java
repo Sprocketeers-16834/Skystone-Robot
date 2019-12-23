@@ -17,19 +17,40 @@ public class BlueAutonBuild extends LinearOpMode {
         waitForStart();
         hd.init(hardwareMap);
         puller.init(hardwareMap);
+//        parking auton
+//        hd.strafeToPosition(53, 0.3);
 
-        hd.strafeToPosition(53, 0.3);
-//        puller.up();
-//        hd.moveToPosition(-26.4, 0.2);
-//        hd.strafeToPosition(20, 0.2);
-//        hd.moveToPosition(-22,0.2);
-//        puller.up();
-//        hd.moveToPosition(10, 0.1);
-//        hd.moveToPosition(85, 0.2);
-//        //
-//        puller.down();
-//
-//        hd.strafeToPosition(-59.4, 0.2);
+        puller.up();
+        hd.moveToPosition(-26.4, 0.2);
+        hd.strafeToPosition(-20, 0.2);
+        hd.moveToPosition(-22,0.2);
+        puller.down();
+        hd.moveToPosition(10, 0.1);
+        hd.moveToPosition(85, 0.2);
+        //
+        puller.up();
+
+        hd.strafeToPosition(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                59.4, 0.2);
 
 //        write new auton here
 

@@ -23,13 +23,13 @@ public class RedAutonLoad extends LinearOpMode {
 
         grabber.up();
         fbar.close();
-        hd.strafeToPosition(-38.9, 0.2);
+        hd.strafeToPosition(38.9, 0.2);
 
         int count = 0;
 
         for(int i=0; i<2; i++) {
             boolean flagSS = false;
-            count = 0;
+            hd.moveToPosition(10, 0.3);
             telemetry.addData("color value", grabber.getValue());
 
             while(!flagSS && count<6) {
@@ -39,22 +39,26 @@ public class RedAutonLoad extends LinearOpMode {
 
                 if(grabber.isSkystone()) {
                     telemetry.addData("FOUND", "SKYSTONE");
-
                     grabber.down();
                     flagSS = true;
+                }
+                if(Math.abs(hd.getDistance()-2.25) >= 0.5) {
+                    telemetry.addData("ADJUSTING", "DISTANCE");
+                    double mag = hd.getDistance()-2.25;
+                    hd.strafeToPosition(-1*mag, 0.2);
                 }
             }
 
             grabber.down();
-            hd.strafeToPosition(10, 0.4);
+            hd.strafeToPosition(-10, 0.4);
             hd.moveToPosition(count*11 + 60, 0.4);
             grabber.up();
             hd.moveToPosition(-count*11-36, 0.4);
-//            hd.strafeToPosition(-12, 0.4);
+            hd.strafeToPosition(12, 0.4);
         }
 
         hd.moveToPosition(count*11 + 30, 0.4);
-//        hd.strafeToPosition(7.0, 0.4);
+        hd.strafeToPosition(7.0, 0.4);
 //        hd.moveToPosition(-28, 0.4);
 
         telemetry.update();

@@ -34,7 +34,7 @@ public class TeleopRobot extends OpMode {
 
         double rotate = -this.gamepad2.left_stick_y;
 
-        if(Math.abs(turn-0) < 0.1   ) {
+        if(Math.abs(turn-0)<0.1) {
             hd.drive(x, y);
             telemetry.addData("action:", "driving");
         }
@@ -60,9 +60,9 @@ public class TeleopRobot extends OpMode {
         }
 
         if(this.gamepad1.dpad_up) {
-            puller.down();
-        } else if(this.gamepad1.dpad_down) {
             puller.up();
+        } else if(this.gamepad1.dpad_down) {
+            puller.down();
         }
 
         telemetry.addData("color alpha", grabber.getValue());

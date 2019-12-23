@@ -20,18 +20,19 @@ public class RedAutonBuild extends LinearOpMode {
         puller.init(hardwareMap);
 //        fbar.init(hardwareMap);
 
-        hd.strafeToPosition(53, 0.3);
+//        parking auton
+//        hd.strafeToPosition(53, 0.3);
 
-//        hd.moveToPosition(-26.4, 0.2);
-//        hd.strafeToPosition(-14, 0.2);
-//        hd.moveToPosition(-22,0.2);
-//        puller.up();
-//        hd.moveToPosition(10, 0.1);
-//        hd.moveToPosition(200, 0.5);
-//        //
-//        puller.down();
-//
-//        hd.strafeToPosition(59.4, 0.2);
+        puller.up();
+//        hd.turnWithGyro(90, 0.3);
+        hd.moveToPosition(-30, 0.2);
+        hd.strafeToPosition(50, 0.2);
+        hd.moveToPosition(-40,0.2);
+        puller.down();
+        hd.moveToPosition(10, 0.1);
+        hd.moveToPosition(90, 0.5);
+        puller.up();
+        hd.strafeToPosition(-150, 0.2);
 
 //        Auton for meet 1
 //        puller.up();

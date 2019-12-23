@@ -16,29 +16,39 @@ public class BlueAutonLoad extends LinearOpMode {
         hd.init(hardwareMap);
         grabber.init(hardwareMap);
 
-        hd.strafeToPosition(-38.0, 0.2);
+        hd.strafeToPosition(38.0, 0.2);
         hd.moveToPosition(10, 0.3);
 
+        int count = 0;
 
         for(int i=0; i<2; i++) {
             boolean flagSS = false;
-            int count = 0;
             hd.moveToPosition(10, 0.3);
+            telemetry.addData("color value", grabber.getValue());
 
             while(!flagSS && count<6) {
+                telemetry.addData("color value", grabber.getValue());
+                hd.moveToPosition(-12 , 0.3);
                 count++;
 
                 if(grabber.isSkystone()) {
-                    flagSS = true;
+                    telemetry.addData("FOUND", "SKYSTONE");
                     grabber.down();
+                    flagSS = true;
+                }
+
+                if(Math.abs(hd.getDistance()-2.25) >= 0.5) {
+                    telemetry.addData("ADJUSTING", "DISTANCE");
+                    double mag = hd.getDistance()-2.25;
+                    hd.strafeToPosition(-1*mag, 0.2);
                 }
             }
             grabber.down();
-            hd.strafeToPosition(-   6.6, 0.2);
+            hd.strafeToPosition(6.6, 0.2);
             hd.moveToPosition(-74, 0.2);
             grabber.up();
             hd.moveToPosition(41, 0.2);
-            hd.strafeToPosition(7.0, 0.2);
+            hd.strafeToPosition(-7.0, 0.2);
         }
 
         hd.moveToPosition(-41, 0.2);

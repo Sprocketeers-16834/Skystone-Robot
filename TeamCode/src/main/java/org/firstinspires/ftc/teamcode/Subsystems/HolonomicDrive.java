@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class HolonomicDrive {
     private DcMotor drive1;
@@ -17,6 +19,7 @@ public class HolonomicDrive {
     private DcMotor drive3;
     private DcMotor drive4;
     private BNO055IMU imu;
+    private DistanceSensor ds;
 
     Double width = 16.0;
     Integer cpr = 28;
@@ -55,6 +58,8 @@ public class HolonomicDrive {
 
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+
+        ds = hwMap.get(DistanceSensor.class, "distance");
     }
 
     public void drive(double x, double y) {
@@ -83,7 +88,7 @@ public class HolonomicDrive {
     }
 
     public void spin(double turn) {
-//        turn *= 0.8;
+        turn *= 0.8;
         if(Math.abs(turn)>0.1) {
             drive1.setPower(turn);
             drive2.setPower(turn);
@@ -98,6 +103,9 @@ public class HolonomicDrive {
         }
     }
 
+    public double getDistance() {
+        return ds.getDistance(DistanceUnit.INCH);
+    }
     //Autonomous methods
     public void resetEncoders() {
         drive2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -105,6 +113,7 @@ public class HolonomicDrive {
         drive3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drive4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+
     public void moveToPosition(double inches, double speed) {
         resetEncoders();
         int move = (int) (Math.round(inches * conversion));
