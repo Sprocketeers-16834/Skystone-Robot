@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode.OpModes.Teleop;
 
+import android.graphics.Paint;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
+import org.firstinspires.ftc.teamcode.Subsystems.Capstone;
 import org.firstinspires.ftc.teamcode.Subsystems.FourBarLift;
 import org.firstinspires.ftc.teamcode.Subsystems.Grabber;
 import org.firstinspires.ftc.teamcode.Subsystems.HolonomicDrive;
@@ -16,6 +20,7 @@ public class TeleopRobot extends OpMode {
     private Grabber grabber = new Grabber();
     private Puller puller = new Puller();
     private FourBarLift fBar = new FourBarLift();
+    private Capstone cap = new Capstone();
 
     @Override
     public void init() {
@@ -23,6 +28,7 @@ public class TeleopRobot extends OpMode {
         grabber.init(hardwareMap);
         puller.init(hardwareMap);
         fBar.init(hardwareMap);
+        cap.init(hardwareMap);
     }
 
     // Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
@@ -63,6 +69,12 @@ public class TeleopRobot extends OpMode {
             puller.up();
         } else if(this.gamepad1.dpad_down) {
             puller.down();
+        }
+
+        if(this.gamepad2.dpad_up) {
+            cap.up();
+        } else if(this.gamepad2.dpad_down) {
+            cap.down();
         }
 
         telemetry.addData("color alpha", grabber.getValue());
