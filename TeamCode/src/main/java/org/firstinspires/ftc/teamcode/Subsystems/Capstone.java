@@ -7,7 +7,7 @@ public class Capstone {
     private Servo capstone;
 
     public void init(HardwareMap hwMap) {
-        capstone = hwMap.get(Servo.class, "rightPuller");
+        capstone = hwMap.get(Servo.class, "capstone");
     }
 
     public void down() {
