@@ -20,6 +20,8 @@ public class HolonomicDrive {
     private DcMotor drive4;
     private BNO055IMU imu;
     private DistanceSensor ds;
+    private Orientation lastAngle = new Orientation();
+    double globalAngle;
 
     Double width = 16.0;
     Integer cpr = 28;
@@ -64,27 +66,50 @@ public class HolonomicDrive {
 
     public void drive(double x, double y) {
         if(Math.abs(x)>0.1 || Math.abs(y)>0.1) {
-            double angle = Math.atan(y / x);
-            double power = Math.sqrt(x * x + y * y);
+            double power1 = y - x;
+            double power2 = y + x;
+            double power3 = y - x;
+            double power4 = y + x;
 
-            angle += 45;
-            double straightPower = power * Math.sin(angle);
-            double sidePower = power * Math.cos(angle);
-            if (x < 0) {
-                straightPower *= -1;
-                sidePower *= -1;
-            }
-            drive1.setPower(sidePower);
-            drive2.setPower(straightPower);
-            drive3.setPower(sidePower);
-            drive4.setPower(straightPower);
-        }
-        else {
+            drive1.setPower(power1);
+            drive2.setPower(power2);
+            drive3.setPower(power3);
+            drive4.setPower(power4);
+        } else {
             drive1.setPower(0);
             drive2.setPower(0);
             drive3.setPower(0);
             drive4.setPower(0);
         }
+
+
+//        if(Math.abs(x)>0.1 || Math.abs(y)>0.1) {
+//            double angle = Math.atan(y / x);
+//            double power = Math.sqrt(x * x + y * y);
+//
+//            angle += 45;
+//            double straightPower = power * Math.sin(angle);
+//            double sidePower = power * Math.cos(angle);
+//
+//            if(Math.abs(x)<0.1 && Math.abs(y)<0.1) {
+//
+//            }
+//
+//            if (x < 0) {
+//                straightPower *= -1;
+//                sidePower *= -1;
+//            }
+//            drive1.setPower(sidePower);
+//            drive2.setPower(straightPower);
+//            drive3.setPower(sidePower);
+//            drive4.setPower(straightPower);
+//        }
+//        else {
+//            drive1.setPower(0);
+//            drive2.setPower(0);
+//            drive3.setPower(0);
+//            drive4.setPower(0);
+//        }
     }
 
     public void spin(double turn) {
@@ -106,12 +131,26 @@ public class HolonomicDrive {
     public double getDistance() {
         return ds.getDistance(DistanceUnit.INCH);
     }
+
+    public String getPosition() {
+        String pos = "";
+        pos += (drive1.getCurrentPosition() + " " + drive2.getCurrentPosition() + " " );
+        pos += (drive3.getCurrentPosition() + " " + drive4.getCurrentPosition() + " " );
+
+        return pos;
+    }
     //Autonomous methods
     public void resetEncoders() {
         drive2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drive3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drive4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void miniAdjust() {
+        drive3.setTargetPosition(50);
+        drive3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        drive3.setPower(0.2);
     }
 
     public void moveToPosition(double inches, double speed) {
@@ -152,6 +191,9 @@ public class HolonomicDrive {
 
     public void strafeToPosition(double inches, double speed){
         resetEncoders();
+        double mult2 = 1;
+        double mult4 = 1;
+        double mult3 = 1;
 
         int move = (int)(Math.round(inches * conversion));
 
@@ -165,10 +207,20 @@ public class HolonomicDrive {
         drive3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drive4.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        drive2.setPower(-speed);
-        drive3.setPower(speed);
+        if(inches>0) {
+            mult2 = -1.2;
+            mult4 = -1;
+            mult3 = 0.7;
+        }
+        if(inches<0) {
+            mult2 = -1.2;
+//            mult4 = -0.6;
+            mult3 = 1;
+        }
+        drive2.setPower(mult2*speed);
+        drive3.setPower(mult3*speed);
         drive1.setPower(speed);
-        drive4.setPower(-speed);
+        drive4.setPower(mult4*speed);
 
         while (drive2.isBusy() && drive1.isBusy() && drive3.isBusy() && drive4.isBusy()){}
         drive1.setPower(0);
@@ -178,80 +230,146 @@ public class HolonomicDrive {
         return;
     }
 
-    public void turnWithGyro(double degrees, double speedDirection){
-        resetEncoders();
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double yaw = -angles.firstAngle;//make this negative
-
-        double first;
-        double second;
-
-        if (speedDirection > 0){
-            if (degrees > 10){
-                first = (degrees - 10) + devertify(yaw);
-                second = degrees + devertify(yaw);
-            }else{
-                first = devertify(yaw);
-                second = degrees + devertify(yaw);
-            }
-        }else{
-            if (degrees > 10){
-                first = devertify(-(degrees - 10) + devertify(yaw));
-                second = devertify(-degrees + devertify(yaw));
-            }else{
-                first = devertify(yaw);
-                second = devertify(-degrees + devertify(yaw));
-            }
-        }
-        Double firsta = convertify(first - 5);//175
-        Double firstb = convertify(first + 5);//-175
-
-        turnWithEncoder(speedDirection);
-
-        if (Math.abs(firsta - firstb) < 11) {
-            while (!(firsta < yaw && yaw < firstb)) {//within range?
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                gravity = imu.getGravity();
-                yaw = -angles.firstAngle;
-            }
-        }else{
-            //
-            while (!((firsta < yaw && yaw < 180) || (-180 < yaw && yaw < firstb))) {//within range?
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                gravity = imu.getGravity();
-                yaw = -angles.firstAngle;
-            }
-        }
-
-        Double seconda = convertify(second - 5);//175
-        Double secondb = convertify(second + 5);//-175
-
-        turnWithEncoder(speedDirection / 3);
-
-        if (Math.abs(seconda - secondb) < 11) {
-            while (!(seconda < yaw && yaw < secondb)) {//within range?
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                gravity = imu.getGravity();
-                yaw = -angles.firstAngle;
-            }
-            while (!((seconda < yaw && yaw < 180) || (-180 < yaw && yaw < secondb))) {//within range?
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                gravity = imu.getGravity();
-                yaw = -angles.firstAngle;
-            }
-            drive2.setPower(0);
-            drive1.setPower(0);
-            drive3.setPower(0);
-            drive4.setPower(0);
-        }
-
-        resetEncoders();
-
-        drive2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        drive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        drive3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        drive4.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    private void resetAngle()
+    {
+        lastAngle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        globalAngle = 0;
     }
+
+    private double getAngle() {
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double deltaAngle = angles.firstAngle - lastAngle.firstAngle;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        globalAngle += deltaAngle;
+
+        lastAngle = angles;
+
+        return globalAngle;
+    }
+
+    public void turnWithGyro(double degrees, double power) {
+        double  power12, power34;
+        resetAngle();
+
+        if (degrees < 0)
+        {   // turn right.
+            power12 = -power;
+            power34 = power;
+        }
+        else if (degrees > 0)
+        {   // turn left.
+            power12 = power;
+            power34 = -power;
+        }
+        else return;
+
+        // set power to rotate.
+        drive2.setPower(power12);
+        drive3.setPower(power34);
+        drive1.setPower(power12);
+        drive4.setPower(power34);
+
+        // rotate until turn is completed.
+        if (degrees < 0)
+        {
+            // On right turn we have to get off zero first.
+            while (getAngle() == 0) {}
+
+            while (getAngle() > degrees) {}
+        }
+        else    // left turn.
+            while (getAngle() < degrees) {}
+
+        // turn the motors off.
+        drive2.setPower(0);
+        drive3.setPower(0);
+        drive1.setPower(0);
+        drive4.setPower(0);
+
+        // reset angle tracking on new heading.
+        resetAngle();
+    }
+
+//    public void turnWithGyro(double degrees, double speedDirection){
+//        resetEncoders();
+//        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//        double yaw = -angles.firstAngle;//make this negative
+//
+//        double first;
+//        double second;
+//
+//        if (speedDirection > 0){
+//            if (degrees > 10){
+//                first = (degrees - 10) + devertify(yaw);
+//                second = degrees + devertify(yaw);
+//            }else{
+//                first = devertify(yaw);
+//                second = degrees + devertify(yaw);
+//            }
+//        }else{
+//            if (degrees > 10){
+//                first = devertify(-(degrees - 10) + devertify(yaw));
+//                second = devertify(-degrees + devertify(yaw));
+//            }else{
+//                first = devertify(yaw);
+//                second = devertify(-degrees + devertify(yaw));
+//            }
+//        }
+//        Double firsta = convertify(first - 5);//175
+//        Double firstb = convertify(first + 5);//-175
+//
+//        turnWithEncoder(speedDirection);
+//
+//        if (Math.abs(firsta - firstb) < 11) {
+//            while (!(firsta < yaw && yaw < firstb)) {//within range?
+//                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//                gravity = imu.getGravity();
+//                yaw = -angles.firstAngle;
+//            }
+//        }else{
+//            //
+//            while (!((firsta < yaw && yaw < 180) || (-180 < yaw && yaw < firstb))) {//within range?
+//                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//                gravity = imu.getGravity();
+//                yaw = -angles.firstAngle;
+//            }
+//        }
+//
+//        Double seconda = convertify(second - 5);//175
+//        Double secondb = convertify(second + 5);//-175
+//
+//        turnWithEncoder(speedDirection / 3);
+//
+//        if (Math.abs(seconda - secondb) < 11) {
+//            while (!(seconda < yaw && yaw < secondb)) {//within range?
+//                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//                gravity = imu.getGravity();
+//                yaw = -angles.firstAngle;
+//            }
+//            while (!((seconda < yaw && yaw < 180) || (-180 < yaw && yaw < secondb))) {//within range?
+//                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//                gravity = imu.getGravity();
+//                yaw = -angles.firstAngle;
+//            }
+//            drive2.setPower(0);
+//            drive1.setPower(0);
+//            drive3.setPower(0);
+//            drive4.setPower(0);
+//        }
+//
+//        resetEncoders();
+//
+//        drive2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        drive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        drive3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        drive4.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//    }
 
     public double devertify(double degrees){
         if (degrees < 0){

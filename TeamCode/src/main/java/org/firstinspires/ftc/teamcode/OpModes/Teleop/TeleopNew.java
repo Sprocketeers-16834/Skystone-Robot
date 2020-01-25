@@ -15,12 +15,13 @@ import org.firstinspires.ftc.teamcode.Subsystems.Puller;
 
 
 @TeleOp
-public class TeleopRobot extends OpMode {
+public class TeleopNew extends OpMode {
     private HolonomicDrive hd = new HolonomicDrive();
     private Grabber grabber = new Grabber();
     private Puller puller = new Puller();
     private FourBarLift fBar = new FourBarLift();
     private Capstone cap = new Capstone();
+    private boolean capEnabled = false;
 
     @Override
     public void init() {
@@ -34,8 +35,8 @@ public class TeleopRobot extends OpMode {
     // Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
     @Override
     public void loop() {
-        double x = -this.gamepad1.right_stick_x;
-        double y = this.gamepad1.right_stick_y;
+        double y = -this.gamepad1.right_stick_x;
+        double x = -this.gamepad1.right_stick_y;
         double turn = this.gamepad1.left_stick_x;
 
         double rotate = -this.gamepad2.left_stick_y;
@@ -56,6 +57,10 @@ public class TeleopRobot extends OpMode {
             fBar.move(0);
         }
 
+        if(this.gamepad1.b) {
+            capEnabled = true;
+        }
+
         if(this.gamepad2.b) {
             fBar.open();
             telemetry.addData("dpad down", this.gamepad2.dpad_down);
@@ -71,10 +76,12 @@ public class TeleopRobot extends OpMode {
             puller.down();
         }
 
-        if(this.gamepad2.y) {
-            cap.up();
-        } else if(this.gamepad2.a) {
-            cap.down();
+        if(capEnabled) {
+            if(this.gamepad2.y) {
+                cap.up();
+            } else if(this.gamepad2.a) {
+                cap.down();
+            }
         }
 
 //        telemetry.addData("color alpha", grabber.getValue());

@@ -11,11 +11,11 @@ public class Capstone {
     }
 
     public void down() {
-        capstone.setPosition(Servo.MAX_POSITION);
+        capstone.setPosition(0.3);
     }
 
     public void up() {
-        capstone.setPosition(Servo.MIN_POSITION);
+        capstone.setPosition(0.85);
     }
 }
 
