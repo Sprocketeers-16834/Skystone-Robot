@@ -18,13 +18,18 @@ public class RedAutonBuild extends LinearOpMode {
 
         puller.up();
 
-        hd.moveToPosition(-34, 0.2);
-        hd.strafeToPosition(29, 0.3);
-        hd.moveToPosition(-38,0.2);
+        hd.moveToPosition(-34, 0.5);    //backwards
+        hd.strafeToPosition(29, 0.5);   //left
+        hd.moveToPosition(-38,0.5);     //backwards
         puller.down();
-        hd.moveToPosition(10, 0.1);
-        hd.moveToPosition(70 , 0.5);
+        hd.strafeToPosition(10, 0.3);   //left
+        hd.moveToPosition(10, 0.2);     //forward slow
+        hd.moveToPosition(80, 0.3);    //forward zoom
         puller.up();
-        hd.strafeToPosition(-120, 0.3);
+        hd.strafeToPosition(-50, 0.3);  //right towards park
+        hd.moveToPosition(10, 0.4);     //forwards if to wall
+//        hd.moveToPosition(-50, 0.4);     //backwards if near bridge
+        hd.strafeToPosition(-80, 0.6); //right to park
+        hd.moveToPosition(10, 0.5);
     }
 }

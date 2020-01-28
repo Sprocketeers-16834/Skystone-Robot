@@ -23,7 +23,6 @@ public class Grabber {
     public double getBlue() {
         return color.blue();
     }
-    public double getAlpha() { return color.alpha();}
 
     public double getC() {
         double R = color.red()/65025;

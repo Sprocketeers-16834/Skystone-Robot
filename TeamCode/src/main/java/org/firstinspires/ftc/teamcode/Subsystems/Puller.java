@@ -13,24 +13,12 @@ public class Puller {
     }
 
     public void down() {
-        leftPuller.setPosition(Servo.MAX_POSITION);
-        rightPuller.setPosition(Servo.MIN_POSITION);
+        leftPuller.setPosition(1.0);
+        rightPuller.setPosition(0);
     }
 
     public void up() {
         leftPuller.setPosition(Servo.MIN_POSITION);
         rightPuller.setPosition(Servo.MAX_POSITION);
     }
-
-//    public void move(){
-//        if(leftPuller.getPosition() < 0.2) {
-//            leftPuller.setPosition(1);
-//            rightPuller.setPosition(0);
-//        if(leftPuller.getPosition() >0.8) {
-//            leftPuller.setPosition(0);//        }
-//            rightPuller.setPosition(1);
-//        }
-
-//    }
-
 }

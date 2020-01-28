@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.OpModes.Teleop;
 
-import android.graphics.Paint;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -21,7 +19,6 @@ public class TeleopNew extends OpMode {
     private Puller puller = new Puller();
     private FourBarLift fBar = new FourBarLift();
     private Capstone cap = new Capstone();
-    private boolean capEnabled = false;
 
     @Override
     public void init() {
@@ -43,12 +40,10 @@ public class TeleopNew extends OpMode {
 
         if(Math.abs(turn)<0.1) {
             hd.drive(x, y);
-            telemetry.addData("action:", "driving");
         }
 
         if(x==0 && y==0) {
             hd.spin(turn);
-            telemetry.addData("action:", "turning");
         }
 
         if(rotate!=0) {
@@ -57,17 +52,11 @@ public class TeleopNew extends OpMode {
             fBar.move(0);
         }
 
-        if(this.gamepad1.b) {
-            capEnabled = true;
-        }
-
         if(this.gamepad2.b) {
             fBar.open();
-            telemetry.addData("dpad down", this.gamepad2.dpad_down);
 
         } else if(this.gamepad2.x) {
             fBar.close();
-            telemetry.addData("dpad up", this.gamepad2.dpad_up);
         }
 
         if(this.gamepad1.dpad_up) {
@@ -76,15 +65,18 @@ public class TeleopNew extends OpMode {
             puller.down();
         }
 
-        if(capEnabled) {
-            if(this.gamepad2.y) {
-                cap.up();
-            } else if(this.gamepad2.a) {
-                cap.down();
-            }
-        }
+       if(this.gamepad2.y) {
+           cap.up();
+       } else if(this.gamepad2.a) {
+           cap.down();
+       }
 
-//        telemetry.addData("color alpha", grabber.getValue());
+       if(this.gamepad2.dpad_up) {
+           grabber.up();
+       } else if(this.gamepad2.dpad_down) {
+           grabber.down();
+       }
+
         telemetry.addData("grabber", grabber.getPosition());
 
         telemetry.update();

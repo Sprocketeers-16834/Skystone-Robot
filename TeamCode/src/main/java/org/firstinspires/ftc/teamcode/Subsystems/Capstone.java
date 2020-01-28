@@ -11,11 +11,11 @@ public class Capstone {
     }
 
     public void down() {
-        capstone.setPosition(0.3);
+        capstone.setPosition(0.4);
     }
 
     public void up() {
-        capstone.setPosition(0.85);
+        capstone.setPosition(1.0);
     }
 }
 

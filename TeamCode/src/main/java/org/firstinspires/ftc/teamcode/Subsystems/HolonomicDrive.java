@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -33,13 +32,9 @@ public class HolonomicDrive {
     Double conversion = cpi * bias;
     Boolean exit = false;
 
-    Orientation angles;
-    Acceleration gravity;
-
     public void init(HardwareMap hwMap) {
         drive1 = hwMap.get(DcMotor.class, "drive1");
         drive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        drive1.setDirection(DcMotor.Direction.REVERSE);
 
         drive2 = hwMap.get(DcMotor.class, "drive2");
         drive2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -47,6 +42,7 @@ public class HolonomicDrive {
 
         drive3 = hwMap.get(DcMotor.class, "drive3");
         drive3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        drive3.setDirection(DcMotor.Direction.REVERSE);
 
         drive4 = hwMap.get(DcMotor.class, "drive4");
         drive4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -71,9 +67,9 @@ public class HolonomicDrive {
             double power3 = y - x;
             double power4 = y + x;
 
-            drive1.setPower(power1);
+            drive1.setPower(-power1);
             drive2.setPower(power2);
-            drive3.setPower(power3);
+            drive3.setPower(-power3);
             drive4.setPower(power4);
         } else {
             drive1.setPower(0);
@@ -81,43 +77,14 @@ public class HolonomicDrive {
             drive3.setPower(0);
             drive4.setPower(0);
         }
-
-
-//        if(Math.abs(x)>0.1 || Math.abs(y)>0.1) {
-//            double angle = Math.atan(y / x);
-//            double power = Math.sqrt(x * x + y * y);
-//
-//            angle += 45;
-//            double straightPower = power * Math.sin(angle);
-//            double sidePower = power * Math.cos(angle);
-//
-//            if(Math.abs(x)<0.1 && Math.abs(y)<0.1) {
-//
-//            }
-//
-//            if (x < 0) {
-//                straightPower *= -1;
-//                sidePower *= -1;
-//            }
-//            drive1.setPower(sidePower);
-//            drive2.setPower(straightPower);
-//            drive3.setPower(sidePower);
-//            drive4.setPower(straightPower);
-//        }
-//        else {
-//            drive1.setPower(0);
-//            drive2.setPower(0);
-//            drive3.setPower(0);
-//            drive4.setPower(0);
-//        }
     }
 
     public void spin(double turn) {
         turn *= 0.8;
         if(Math.abs(turn)>0.1) {
-            drive1.setPower(turn);
+            drive1.setPower(-turn);
             drive2.setPower(turn);
-            drive3.setPower(-turn);
+            drive3.setPower(turn);
             drive4.setPower(-turn);
         }
         else {
@@ -139,6 +106,8 @@ public class HolonomicDrive {
 
         return pos;
     }
+
+
     //Autonomous methods
     public void resetEncoders() {
         drive2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -147,29 +116,23 @@ public class HolonomicDrive {
         drive4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void miniAdjust() {
-        drive3.setTargetPosition(50);
-        drive3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        drive3.setPower(0.2);
-    }
-
     public void moveToPosition(double inches, double speed) {
         resetEncoders();
         int move = (int) (Math.round(inches * conversion));
 
-        drive3.setTargetPosition(((-drive3.getCurrentPosition() - move)));
-        drive2.setTargetPosition(((drive2.getCurrentPosition() + move)));
+        drive1.setTargetPosition(drive1.getCurrentPosition() + move);
+        drive2.setTargetPosition(drive2.getCurrentPosition() + move);
+        drive3.setTargetPosition(drive3.getCurrentPosition() + move);
         drive4.setTargetPosition(drive4.getCurrentPosition() + move);
-        drive1.setTargetPosition(-drive1.getCurrentPosition() - move);
 
-        drive2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        drive2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drive3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drive4.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        drive1.setPower(speed);
         drive2.setPower(speed);
         drive3.setPower(speed);
-        drive1.setPower(speed);
         drive4.setPower(speed);
 
         while (drive2.isBusy() && drive1.isBusy() && drive3.isBusy() && drive4.isBusy()) {
@@ -191,42 +154,29 @@ public class HolonomicDrive {
 
     public void strafeToPosition(double inches, double speed){
         resetEncoders();
-        double mult2 = 1;
-        double mult4 = 1;
-        double mult3 = 1;
 
         int move = (int)(Math.round(inches * conversion));
 
-        drive3.setTargetPosition(drive3.getCurrentPosition() + move);
-        drive2.setTargetPosition(drive2.getCurrentPosition() + move);
-        drive4.setTargetPosition(drive4.getCurrentPosition() + move);
-        drive1.setTargetPosition(drive1.getCurrentPosition() + move);
+        drive1.setTargetPosition(-(drive1.getCurrentPosition() + move));
+        drive2.setTargetPosition((drive2.getCurrentPosition() + move));
+        drive3.setTargetPosition(-(drive3.getCurrentPosition() + move));
+        drive4.setTargetPosition((drive4.getCurrentPosition() + move));
 
-        drive2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        drive2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drive3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drive4.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        if(inches>0) {
-            mult2 = -1.2;
-            mult4 = -1;
-            mult3 = 0.7;
-        }
-        if(inches<0) {
-            mult2 = -1.2;
-//            mult4 = -0.6;
-            mult3 = 1;
-        }
-        drive2.setPower(mult2*speed);
-        drive3.setPower(mult3*speed);
         drive1.setPower(speed);
-        drive4.setPower(mult4*speed);
+        drive2.setPower(speed);
+        drive3.setPower(speed);
+        drive4.setPower(speed);
 
         while (drive2.isBusy() && drive1.isBusy() && drive3.isBusy() && drive4.isBusy()){}
         drive1.setPower(0);
         drive2.setPower(0);
-        drive4.setPower(0);
         drive3.setPower(0);
+        drive4.setPower(0);
         return;
     }
 
