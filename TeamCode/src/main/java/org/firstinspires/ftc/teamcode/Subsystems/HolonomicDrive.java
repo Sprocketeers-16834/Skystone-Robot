@@ -18,7 +18,9 @@ public class HolonomicDrive {
     private DcMotor drive3;
     private DcMotor drive4;
     private BNO055IMU imu;
-    private DistanceSensor ds;
+    private DistanceSensor backDist;
+    private DistanceSensor grabberDist;
+
     private Orientation lastAngle = new Orientation();
     double globalAngle;
 
@@ -57,7 +59,8 @@ public class HolonomicDrive {
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        ds = hwMap.get(DistanceSensor.class, "distance");
+        grabberDist = hwMap.get(DistanceSensor.class, "grabberDist");
+        backDist = hwMap.get(DistanceSensor.class, "backDist");
     }
 
     public void drive(double x, double y) {
@@ -95,18 +98,13 @@ public class HolonomicDrive {
         }
     }
 
-    public double getDistance() {
-        return ds.getDistance(DistanceUnit.INCH);
+    public double getGrabDistance() {
+        return grabberDist.getDistance(DistanceUnit.INCH);
     }
 
-    public String getPosition() {
-        String pos = "";
-        pos += (drive1.getCurrentPosition() + " " + drive2.getCurrentPosition() + " " );
-        pos += (drive3.getCurrentPosition() + " " + drive4.getCurrentPosition() + " " );
-
-        return pos;
+    public double getbackDistance() {
+        return backDist.getDistance(DistanceUnit.INCH);
     }
-
 
     //Autonomous methods
     public void resetEncoders() {

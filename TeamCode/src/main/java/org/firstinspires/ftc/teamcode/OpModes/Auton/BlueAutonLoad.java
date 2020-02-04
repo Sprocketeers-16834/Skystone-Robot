@@ -12,7 +12,9 @@ public class BlueAutonLoad extends LinearOpMode {
     private HolonomicDrive hd = new HolonomicDrive();
     private Grabber grabber = new Grabber();
     private FourBarLift fbar = new FourBarLift();
-    private final int stone = 15;
+    private final int stone = 9;
+
+    private int count = 0;
 
     public void runOpMode() {
         waitForStart();
@@ -23,13 +25,21 @@ public class BlueAutonLoad extends LinearOpMode {
         grabber.up();
         fbar.close();
 
-        hd.strafeToPosition(60, 0.6);   //left to approach quarry
+        hd.strafeToPosition(-60, 0.6);   //left to approach quarry
+        search();
+        //second stone
+        hd.moveToPosition((count+2)*stone +105,0.7); //forwards to approach next stone
+        hd.strafeToPosition(-50, 0.7);
+        search();
+        hd.moveToPosition(-40, 1.0); //backwards to park
+    }
 
-        int count = 0;
+    private void search() {
+        count = 0;
         boolean flagSS = false;
 
         while(!flagSS && count<6) {
-            if(Math.abs(hd.getDistance()-3) >= 0.3) {       //strafe to make adjustments for distance to stone
+            if(Math.abs(hd.getGrabDistance()-3) >= 0.3) {       //strafe to make adjustments for distance to stone
                 microAdjust();
             }
 
@@ -46,36 +56,26 @@ public class BlueAutonLoad extends LinearOpMode {
 
         hd.moveToPosition(-count*stone - 80, 0.7);  //backwards to pass the line
         grabber.up();
-
-        //second stone
-        hd.moveToPosition((count+2)*stone +120,0.7); //forwards to approach next stone
-        hd.strafeToPosition(70, 0.7);
-        microAdjust();
-        ssProcedures();
-        hd.moveToPosition(50, 1.0);
-        hd.moveToPosition((count+2)*stone+160, 1.0);     //forwards to drop
-        grabber.up();
-        hd.moveToPosition(-50, 1.0); //backwards to park
     }
 
     private void microAdjust() {
         telemetry.addData("ADJUSTING", "DISTANCE");
-        telemetry.addData("Distance", hd.getDistance());
-        double mag = hd.getDistance() - 1;
+        telemetry.addData("Distance", hd.getGrabDistance());
+        double mag = hd.getGrabDistance() - 1;
         hd.strafeToPosition(1*mag, 0.2);
         telemetry.update();
     }
 
     private void ssProcedures() {
-        hd.strafeToPosition(10, 0.5);   //left to push IN skystone
+        hd.strafeToPosition(-10, 0.5);   //left to push IN skystone
         sleep(500);                      //pause
         telemetry.addData("FOUND", "SKYSTONE");
         grabber.down();
 
         sleep(500);
-        hd.strafeToPosition(3, 0.3);    //left for small adjustments by PUSHING IN
+        hd.strafeToPosition(-3, 0.3);    //left for small adjustments by PUSHING IN
         hd.moveToPosition(-5, 0.3);     //backwards for small adjustments in case overshot
 
-        hd.strafeToPosition(-60, 0.8); //right to drag stone OUT
+        hd.strafeToPosition(50, 0.8); //right to drag stone OUT
     }
 }

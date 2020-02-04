@@ -76,8 +76,6 @@ public class ColorTest extends OpMode {
 //        telemetry.addData("hue:", hue(r, g, b));
 //        telemetry.addData("color:", identifyColor(r, g, b));
         telemetry.addData("br", grabber.getBR());
-        telemetry.addData("distance", hd.getDistance());
-
         telemetry.update();
     }
 }

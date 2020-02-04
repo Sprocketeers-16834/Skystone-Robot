@@ -1,3 +1,5 @@
+package org.firstinspires.ftc.teamcode.OpModes.Auton;
+
 import org.firstinspires.ftc.teamcode.Subsystems.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Puller;
 
@@ -16,18 +18,16 @@ public class BlueAutonBuild extends LinearOpMode {
 
         puller.up();
         hd.moveToPosition(-34, 0.5);    //backwards
-        hd.strafeToPosition(-35, 0.5);  //right
+        hd.strafeToPosition(35, 0.5);  //right
         hd.moveToPosition(-38,0.5);     //backwards
         puller.down();
-        hd.strafeToPosition(-10, 0.3);  //right
+        sleep(1000);
         hd.moveToPosition(10, 0.2);     //forward slow
         hd.moveToPosition(80, 0.3);    //forward zoom
         puller.up();
-        hd.strafeToPosition(50, 0.3);   //left towards park
-        hd.moveToPosition(10, 0.4);     //forwards if to wall
-
+        hd.strafeToPosition(-50, 0.3);   //left towards park
 //        hd.moveToPosition(-50, 0.4);     //backwards if near bridge, comment out if near wall
-        hd.strafeToPosition(80, 0.6);  //left to park
+        hd.strafeToPosition(-80, 0.6);  //left to park
         hd.moveToPosition(10, 0.5);
     }
 }

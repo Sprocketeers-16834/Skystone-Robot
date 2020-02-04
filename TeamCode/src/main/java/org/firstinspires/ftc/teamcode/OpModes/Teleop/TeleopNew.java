@@ -32,7 +32,7 @@ public class TeleopNew extends OpMode {
     // Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
     @Override
     public void loop() {
-        double y = -this.gamepad1.right_stick_x;
+        double y = this.gamepad1.right_stick_x;
         double x = -this.gamepad1.right_stick_y;
         double turn = this.gamepad1.left_stick_x;
 
