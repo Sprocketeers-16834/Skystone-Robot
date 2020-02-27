@@ -63,7 +63,7 @@ public class Grabber {
     }
 
     public void down() {
-        grabber.setPosition(0.6);
+        grabber.setPosition(0.7);
     }
 
     public void up() {

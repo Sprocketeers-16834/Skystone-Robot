@@ -70,10 +70,10 @@ public class HolonomicDrive {
             double power3 = y - x;
             double power4 = y + x;
 
-            drive1.setPower(-power1);
-            drive2.setPower(power2);
-            drive3.setPower(-power3);
-            drive4.setPower(power4);
+            drive1.setPower(-1.5*power1);
+            drive2.setPower(1.5*power2);
+            drive3.setPower(-1.5*power3);
+            drive4.setPower(1.5*power4);
         } else {
             drive1.setPower(0);
             drive2.setPower(0);
@@ -167,8 +167,8 @@ public class HolonomicDrive {
 
         drive1.setPower(speed);
         drive2.setPower(speed);
-        drive3.setPower(speed);
-        drive4.setPower(speed);
+        drive3.setPower(0.9*speed);
+        drive4.setPower(0.9*speed);
 
         while (drive2.isBusy() && drive1.isBusy() && drive3.isBusy() && drive4.isBusy()){}
         drive1.setPower(0);
